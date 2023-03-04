@@ -1,42 +1,58 @@
 import math
 from matplotlib import pyplot as plt
+import functions as f
 
-class main:
+
+def polynomial(x):
+    x2 = x ** 2
+    return x2 - x - 1
+
+
+def trigonometric(x):
+    return math.cos(x)
+
+
+def exponent_func(x):
+    a = 2
+    return a ** x
+
+
+class Main:
+    defined_functions = {
+        '1': polynomial,
+        '2': trigonometric,
+        '3': exponent_func,
+        None: None
+    }
+
+    epsilon = None
+    iteration_number = None
+    user_functions = [None, None]
+
     if __name__ == "__main__":
+
         func_count = input("Podaj ilość funkcji w twoim złożeniu: ")
-        lower_bound = input("Podaj dolny przedział poszukiwania miejsca zerowego: ")
-        upper_bound = input("Podaj górny przedział poszukiwania miejsca zerowego: ")
-        stop_criterion = input("Podaj warunek stopu: 1 - epsilon, 2 - ilośc iteracji: ")
-        if stop_criterion == "1":
-            epsilon = input("Podaj wartość epsilonu: ")
-        elif stop_criterion == "2":
-            iteration_number = input("Podaj ilość iteracji: ")
-        else:
-            exit(1)
-
-        user_functions = []
-
-        for i in  range(int(func_count)):
+        for i in range(int(func_count)):
             print('''Wybierz funkcje z których chcesz otrzymać złożenie:
             1 - Wielomian
             2 - Funkcje trygonometryczną
             3 - Funkcje wykładniczą''')
             user_fn = input()
-            user_functions.append(user_fn)
-
+            user_functions[i] = user_fn
         print(user_functions)
-# defined_functions = {
-#     "poli": 1,
-#     "trygon"
-# }
+        a = float(input("Podaj dolny przedział poszukiwania miejsca zerowego: "))
+        b = float(input("Podaj górny przedział poszukiwania miejsca zerowego: "))
 
-def polynomial(x):
-    x3 = x * x * x
-    return x3 - x + 1
+        stop_criterion = input("Podaj warunek stopu: 1 - epsilon, 2 - ilośc iteracji: ")
+        if stop_criterion == "1":
+            epsilon = float(input("Podaj wartość epsilonu: "))
+        elif stop_criterion == "2":
+            iteration_number = int(input("Podaj ilość iteracji: "))
+        else:
+            print("Złe kryterium")
+            exit(1)
 
+        f2 = defined_functions[user_functions[1]]
+        f1 = defined_functions[user_functions[0]]
 
-def bisection(epsilon, interval_beg, interval_end):
-    solutions = []
-
-
-
+        print(f.bisection(f1, a, b, epsilon=epsilon, iteration_number=iteration_number, f2=f2))
