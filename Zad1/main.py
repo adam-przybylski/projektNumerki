@@ -21,7 +21,12 @@ class Main:
     fp2 = None
 
     if __name__ == "__main__":
-
+        f1 = f.polynomial
+        f2 = f.trigonometric
+        f3 = f.exponent_func
+        print(f.nested_function(f1, 2))
+        print(f.nested_function(f1, 2, f2))
+        print(f.nested_function(f1, 2, f2, f3))
         func_count = input("Podaj ilość funkcji w twoim złożeniu: ")
         for i in range(int(func_count)):
             print('''Wybierz funkcje z których chcesz otrzymać złożenie:
@@ -40,7 +45,7 @@ class Main:
         elif stop_criterion == "2":
             iteration_number = int(input("Podaj ilość iteracji: "))
         else:
-            print("Złe kryterium")
+            print("Zły warunek stopu")
             exit(74)
 
         f2 = defined_functions[user_functions[1]]
@@ -51,11 +56,11 @@ class Main:
             fp2 = defined_functions[2 * user_functions[1]]
 
         if fp2 is not None:
-            if (fp1(fp2(a)) < 0 and fp1(fp2(b)) < 0) or fp1(fp2(a)) > 0 and fp1(fp2(b)) > 0:
+            if (f1(f2(a)) < 0 and f1(f2(b)) < 0) or (f1(f2(a)) > 0 and f1(f2(b)) > 0):
                 print("Funkcja na krańcach przedziału musi mieć różne znaki")
                 exit(74)
         else:
-            if fp1(a) < 0 and fp1(b) < 0 or fp1(a) > 0 and fp1(b) > 0:
+            if (f1(a) < 0 and f1(b) < 0) or (f1(a) > 0 and f1(b) > 0):
                 print("Funkcja na krańcach przedziału musi mieć różne znaki")
                 exit(74)
 

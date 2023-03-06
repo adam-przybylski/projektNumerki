@@ -1,6 +1,16 @@
 import math
 
 
+def nested_function(f1, x, f2=None, f3=None):
+    if f2 is None:
+        return f1(x)
+    if f3 is None:
+        y = f1(f2(x))
+        return y
+    else:
+        return f1(f2(f3(x)))
+
+
 def horner(x, arguments):
     result = 0
     for coefficient in arguments:
