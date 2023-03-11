@@ -58,13 +58,19 @@ def bisection_algorithm(a, b, x1, func1, func2):
 def bisection(f1, a, b, f2=None, f3=None, epsilon=None, iteration_number=None):
     if epsilon is not None:
         x1 = avg(a, b)
+        if abs(nested_function(f1, x1, f2, f3)) <= epsilon:
+            return x1, 0
         a, b = bisection_algorithm(a, b, x1, nested_function(f1, a, f2, f3), nested_function(f1, x1, f2, f3))
         x2 = avg(a, b)
+        if abs(nested_function(f1, x2, f2, f3)) <= epsilon:
+            return x2, 1
         a, b = bisection_algorithm(a, b, x2, nested_function(f1, a, f2, f3), nested_function(f1, x2, f2, f3))
         i = 2
         while abs(x2 - x1) >= epsilon:
             x1 = x2
             x2 = avg(a, b)
+            if abs(nested_function(f1, x2, f2, f3)) <= epsilon:
+                return x2, i
             a, b = bisection_algorithm(a, b, x2, nested_function(f1, a, f2, f3), nested_function(f1, x2, f2, f3))
             i += 1
         return x2, i

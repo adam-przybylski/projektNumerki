@@ -28,9 +28,9 @@ class Main:
             exit(1)
         for i in range(func_count):
             print('''Wybierz funkcje z których chcesz otrzymać złożenie:
-            1 - Wielomian
-            2 - Funkcje trygonometryczną
-            3 - Funkcje wykładniczą''')
+            1 - Wielomian f(x) = x^2 - x - 1
+            2 - Funkcje trygonometryczną f(x) = cos(x)
+            3 - Funkcje wykładniczą f(x) = 2^x''')
             user_fn = input()
             user_functions[i] = user_fn
 
@@ -68,12 +68,34 @@ class Main:
         print(
             f'Metoda stycznych: {f.newton_method(f1, fp1, a, b, epsilon=epsilon, iteration_number=iteration_number, f2=f2, fp2=fp2, f3=f3, fp3=fp3)}')
 
-        # plt.rcParams["figure.figsize"] = [7.50, 7.50]
-        # plt.rcParams["figure.autolayout"] = True
+        #Plot section
+        xmin, xmax, ymin, ymax = -5, 5, -5, 5
+        ticks_frequency = 1
+
+        fig, ax = plt.subplots(figsize=(10, 10))
+
+        fig.patch.set_facecolor('#ffffff')
+
+        ax.set(xlim=(xmin - 1, xmax + 1), ylim=(ymin - 1, ymax + 1), aspect='equal')
+
+        ax.spines['bottom'].set_position('zero')
+        ax.spines['left'].set_position('zero')
+
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+
+        ax.set_xlabel('$x$', size=14, labelpad=-24, x=1.02)
+        ax.set_ylabel('$y$', size=14, labelpad=-21, y=1.02, rotation=0)
+
+        x_ticks = np.arange(xmin, xmax + 1, ticks_frequency)
+        y_ticks = np.arange(ymin, ymax + 1, ticks_frequency)
+        ax.set_xticks(x_ticks[x_ticks != 0])
+        ax.set_yticks(y_ticks[y_ticks != 0])
+        ax.set_xticks(np.arange(xmin, xmax + 1), minor=True)
+        ax.set_yticks(np.arange(ymin, ymax + 1), minor=True)
+
+        ax.grid(which='both', color='grey', linewidth=1, linestyle='-', alpha=0.2)
 
         xlist = np.linspace(-5, 5, num=1000)
-        # xlist = np.arange(-10, 10.1, .1, )
-
-        plt.figure(num=0, dpi=120)
         plt.plot(xlist, f.nested_function(f1, xlist, f2, f3), color='red')
         plt.show()
