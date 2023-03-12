@@ -56,21 +56,18 @@ def bisection_algorithm(a, b, x1, func1, func2):
 
 
 def bisection(f1, a, b, f2=None, f3=None, epsilon=None, iteration_number=None):
+    if (nested_function(f1, a, f2, f3) < 0 and nested_function(f1, b, f2, f3) < 0) or (
+            nested_function(f1, a, f2, f3) > 0 and nested_function(f1, b, f2, f3) > 0):
+        raise Exception
     if epsilon is not None:
         x1 = avg(a, b)
-        if abs(nested_function(f1, x1, f2, f3)) <= epsilon:
-            return x1, 0
         a, b = bisection_algorithm(a, b, x1, nested_function(f1, a, f2, f3), nested_function(f1, x1, f2, f3))
         x2 = avg(a, b)
-        if abs(nested_function(f1, x2, f2, f3)) <= epsilon:
-            return x2, 1
         a, b = bisection_algorithm(a, b, x2, nested_function(f1, a, f2, f3), nested_function(f1, x2, f2, f3))
         i = 2
         while abs(x2 - x1) >= epsilon:
             x1 = x2
             x2 = avg(a, b)
-            if abs(nested_function(f1, x2, f2, f3)) <= epsilon:
-                return x2, i
             a, b = bisection_algorithm(a, b, x2, nested_function(f1, a, f2, f3), nested_function(f1, x2, f2, f3))
             i += 1
         return x2, i
@@ -95,8 +92,7 @@ def newton_method(f1, fp1, a, b, f2=None, fp2=None, f3=None, fp3=None, epsilon=N
     x1 = avg(a, b)
     derivative = nested_function_derivative(fp1, x1, fp2, fp3, f2, f3)
     if derivative == 0:
-        print("Nie można dokończyć algorytmu bo jedna z pochodnych jest równa 0")
-        return
+        raise Exception
     x2 = x1 - nested_function(f1, x1, f2, f3) / derivative
     if epsilon is not None:
         i = 2
@@ -104,8 +100,7 @@ def newton_method(f1, fp1, a, b, f2=None, fp2=None, f3=None, fp3=None, epsilon=N
             x1 = x2
             derivative = nested_function_derivative(fp1, x1, fp2, fp3, f2, f3)
             if derivative == 0:
-                print("Nie można dokończyć algorytmu bo jedna z pochodnych jest równa 0")
-                return
+                raise Exception
             x2 = x1 - nested_function(f1, x1, f2, f3) / derivative
             i += 1
         return x2, i
@@ -114,7 +109,6 @@ def newton_method(f1, fp1, a, b, f2=None, fp2=None, f3=None, fp3=None, epsilon=N
             x1 = x2
             derivative = nested_function_derivative(fp1, x1, fp2, fp3, f2, f3)
             if derivative == 0:
-                print("Nie można dokończyć algorytmu bo jedna z pochodnych jest równa 0")
-                return
+                raise Exception
             x2 = x1 - nested_function(f1, x1, f2, f3) / derivative
         return x2

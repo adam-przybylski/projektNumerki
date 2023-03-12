@@ -56,19 +56,22 @@ class Main:
         if user_functions[2] is not None:
             fp3 = defined_functions[2 * user_functions[2]]
 
-        if (f.nested_function(f1, a, f2, f3) < 0 and f.nested_function(f1, b, f2, f3) < 0) or (
-                f.nested_function(f1, a, f2, f3) > 0 and f.nested_function(f1, b, f2, f3) > 0):
-            print(
-                "Aby wykonać poszukiwanie miejsca zerowego metodą bisekcji funkcja na krańcach przedziału musi mieć "
-                "różne znaki")
-        else:
+        try:
             print(
                 f'Metoda bisekcji: {f.bisection(f1, a, b, epsilon=epsilon, iteration_number=iteration_number, f2=f2, f3=f3)}')
+        except Exception:
+            print("Aby wykonać poszukiwanie miejsca zerowego metodą bisekcji funkcja na krańcach przedziału musi mieć "
+            "różne znaki")
+            pass
 
-        print(
-            f'Metoda stycznych: {f.newton_method(f1, fp1, a, b, epsilon=epsilon, iteration_number=iteration_number, f2=f2, fp2=fp2, f3=f3, fp3=fp3)}')
+        try:
+            print(
+                f'Metoda stycznych: {f.newton_method(f1, fp1, a, b, epsilon=epsilon, iteration_number=iteration_number, f2=f2, fp2=fp2, f3=f3, fp3=fp3)}')
+        except Exception:
+            print("Nie można dokończyć algorytmu bo jedna z pochodnych jest równa 0")
+            pass
 
-        #Plot section
+        # Plot section
         xmin, xmax, ymin, ymax = -5, 5, -5, 5
         ticks_frequency = 1
 
