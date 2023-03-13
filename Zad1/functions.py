@@ -22,8 +22,7 @@ def trigonometric(x):
 
 
 def exponent_func(x):
-    a = 2
-    return a ** x
+    return 2 ** x - 1.5
 
 
 def polynomial_derivative(x):
@@ -72,11 +71,12 @@ def bisection(f1, a, b, f2=None, f3=None, epsilon=None, iteration_number=None):
             i += 1
         return x2, i
     else:
-        x1 = None
-        for i in range(iteration_number):
+        x1 = avg(a, b)
+        a, b = bisection_algorithm(a, b, x1, nested_function(f1, a, f2, f3), nested_function(f1, x1, f2, f3))
+        for i in range(1, iteration_number):
             x1 = avg(a, b)
             a, b = bisection_algorithm(a, b, x1, nested_function(f1, a, f2, f3), nested_function(f1, x1, f2, f3))
-        return x1
+        return x1, iteration_number
 
 
 def nested_function_derivative(fp1, x, fp2=None, fp3=None, f2=None, f3=None):
@@ -111,4 +111,4 @@ def newton_method(f1, fp1, a, b, f2=None, fp2=None, f3=None, fp3=None, epsilon=N
             if derivative == 0:
                 raise Exception
             x2 = x1 - nested_function(f1, x1, f2, f3) / derivative
-        return x2
+        return x2, iteration_number
