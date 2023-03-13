@@ -5,13 +5,10 @@ import functions as f
 
 class Main:
     defined_functions = {
-        '1': f.polynomial,
-        '2': f.trigonometric,
-        '3': f.exponent_func,
-        '11': f.polynomial_derivative,
-        '22': f.trigonometric_derivative,
-        '33': f.exponent_derivative,
-        None: None
+        '1': np.sin,
+        '2': np.cos,
+        '3': np.tan,
+        '4': f.ctan
     }
 
     epsilon = None
@@ -28,11 +25,34 @@ class Main:
             exit(1)
         for i in range(func_count):
             print('''Wybierz funkcje z których chcesz otrzymać złożenie:
-            1 - Wielomian f(x) = x^2 - x - 1
-            2 - Funkcje trygonometryczną f(x) = cos(x)
-            3 - Funkcje wykładniczą f(x) = 2^x''')
-            user_fn = input()
-            user_functions[i] = user_fn
+            1 - Wielomian
+            2 - Funkcje trygonometryczną
+            3 - Funkcje wykładniczą''')
+            func_type = input()
+            if func_type == '1':
+                degree = int(input("Podaj stopień wieolomianu: "))
+                print("Podaj współczynniki wielomianu (od najwyższego do najniższego)")
+                for j in range(degree + 1):
+                    a = float(input(f'Podaj {j + 1} współczynnik: '))
+                    f.poly_args.append(a)
+                user_functions[i] = f.horner
+            elif func_type == '2':
+                print('''Wybierz funkcje trygonometryczną:
+                            1 - sin(x)
+                            2 - cos(x)
+                            3 - tg(x)
+                            4 - ctg(x)''')
+                user_choice = input()
+                if user_choice not in defined_functions.keys():
+                    print("Nie ma takiego wyboru.")
+                    exit(-1)
+                user_functions[i] = defined_functions[user_choice]
+            elif func_type == '3':
+                f.exponent_base = float(input("Wybierz podstawę funkcji wykładniczej: "))
+                user_functions[i] = f.exponent_func
+            else:
+                print("Wybrano złą funkcję.")
+                exit(-1)
 
         a = float(input("Podaj dolny przedział poszukiwania miejsca zerowego: "))
         b = float(input("Podaj górny przedział poszukiwania miejsca zerowego: "))
@@ -46,30 +66,30 @@ class Main:
             print("Zły warunek stopu")
             exit(1)
 
-        f3 = defined_functions[user_functions[2]]
-        f2 = defined_functions[user_functions[1]]
-        f1 = defined_functions[user_functions[0]]
-        if user_functions[0] is not None:
-            fp1 = defined_functions[2 * user_functions[0]]
-        if user_functions[1] is not None:
-            fp2 = defined_functions[2 * user_functions[1]]
-        if user_functions[2] is not None:
-            fp3 = defined_functions[2 * user_functions[2]]
+        f3 = user_functions[2]
+        f2 = user_functions[1]
+        f1 = user_functions[0]
+        # if user_functions[0] is not None:
+        #     fp1 = defined_functions[2 * user_functions[0]]
+        # if user_functions[1] is not None:
+        #     fp2 = defined_functions[2 * user_functions[1]]
+        # if user_functions[2] is not None:
+        #     fp3 = defined_functions[2 * user_functions[2]]
 
         try:
             print(
                 f'Metoda bisekcji: {f.bisection(f1, a, b, epsilon=epsilon, iteration_number=iteration_number, f2=f2, f3=f3)}')
         except Exception:
             print("Aby wykonać poszukiwanie miejsca zerowego metodą bisekcji funkcja na krańcach przedziału musi mieć "
-            "różne znaki")
+                  "różne znaki")
             pass
 
-        try:
-            print(
-                f'Metoda stycznych: {f.newton_method(f1, fp1, a, b, epsilon=epsilon, iteration_number=iteration_number, f2=f2, fp2=fp2, f3=f3, fp3=fp3)}')
-        except Exception:
-            print("Nie można dokończyć algorytmu bo jedna z pochodnych jest równa 0")
-            pass
+        # try:
+        #     print(
+        #         f'Metoda stycznych: {f.newton_method(f1, fp1, a, b, epsilon=epsilon, iteration_number=iteration_number, f2=f2, fp2=fp2, f3=f3, fp3=fp3)}')
+        # except Exception:
+        #     print("Nie można dokończyć algorytmu bo jedna z pochodnych jest równa 0")
+        #     pass
 
         # Plot section
         xmin, xmax, ymin, ymax = -5, 5, -5, 5
@@ -99,6 +119,6 @@ class Main:
 
         ax.grid(which='both', color='grey', linewidth=1, linestyle='-', alpha=0.2)
 
-        xlist = np.linspace(-5, 5, num=1000)
+        xlist = np.linspace(-6, 6, num=1000)
         plt.plot(xlist, f.nested_function(f1, xlist, f2, f3), color='red')
         plt.show()

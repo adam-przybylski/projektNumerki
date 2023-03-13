@@ -1,10 +1,13 @@
 import math
 import numpy as np
 
+poly_args = []
+exponent_base = 0
 
-def horner(x, arguments):
+
+def horner(x):
     result = 0
-    for coefficient in arguments:
+    for coefficient in poly_args:
         result = result * x + coefficient
     return result
 
@@ -13,20 +16,16 @@ def avg(x1, x2):
     return (x1 + x2) / 2
 
 
-def polynomial(x):
-    return horner(x, [1, -1, -1])
-
-
-def trigonometric(x):
-    return np.cos(x)
+def ctan(x):
+    return 1 / np.tan(x)
 
 
 def exponent_func(x):
-    return 2 ** x - 1.5
+    return exponent_base ** x
 
 
 def polynomial_derivative(x):
-    return horner(x, [2, -1])
+    return horner(x)
 
 
 def trigonometric_derivative(x):
