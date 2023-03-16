@@ -19,6 +19,8 @@ class Main:
     fp3 = None
 
     if __name__ == "__main__":
+        # fp1 = f.derivative(np.tan)
+        # print(fp1(1))
         func_count = int(input("Podaj liczbę funkcji w twoim złożeniu (max 3): "))
         if func_count > 3:
             print("Przekroczono limit funkcji do złożenia.")
@@ -35,7 +37,7 @@ class Main:
                 for j in range(degree + 1):
                     a = float(input(f'Podaj {j + 1} współczynnik: '))
                     f.poly_args.append(a)
-                user_functions[i] = f.horner
+                user_functions[i] = f.polynomial
             elif func_type == '2':
                 print('''Wybierz funkcje trygonometryczną:
                             1 - sin(x)
@@ -69,12 +71,12 @@ class Main:
         f3 = user_functions[2]
         f2 = user_functions[1]
         f1 = user_functions[0]
-        # if user_functions[0] is not None:
-        #     fp1 = defined_functions[2 * user_functions[0]]
-        # if user_functions[1] is not None:
-        #     fp2 = defined_functions[2 * user_functions[1]]
-        # if user_functions[2] is not None:
-        #     fp3 = defined_functions[2 * user_functions[2]]
+        if f1 is not None:
+            fp1 = f.derivative(f1)
+        if f2 is not None:
+            fp2 = f.derivative(f2)
+        if f3 is not None:
+            fp3 = f.derivative(f3)
 
         try:
             print(
@@ -84,12 +86,12 @@ class Main:
                   "różne znaki")
             pass
 
-        # try:
-        #     print(
-        #         f'Metoda stycznych: {f.newton_method(f1, fp1, a, b, epsilon=epsilon, iteration_number=iteration_number, f2=f2, fp2=fp2, f3=f3, fp3=fp3)}')
-        # except Exception:
-        #     print("Nie można dokończyć algorytmu bo jedna z pochodnych jest równa 0")
-        #     pass
+        try:
+            print(
+                f'Metoda stycznych: {f.newton_method(f1, fp1, a, b, epsilon=epsilon, iteration_number=iteration_number, f2=f2, fp2=fp2, f3=f3, fp3=fp3)}')
+        except Exception:
+            print("Nie można dokończyć algorytmu bo jedna z pochodnych jest równa 0")
+            pass
 
         # Plot section
         xmin, xmax, ymin, ymax = -5, 5, -5, 5
