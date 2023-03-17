@@ -18,10 +18,9 @@ def polynomial(x):
 
 def polynomial_derivative(x):
     deriv_args = []
-    degree = len(poly_args)-1
+    degree = len(poly_args) - 1
     for i in range(degree):
-        deriv_args.append(poly_args[i]*degree-i)
-    # TODO
+        deriv_args.append(poly_args[i] * (degree - i))
     return horner(x, deriv_args)
 
 
@@ -76,8 +75,12 @@ def bisection(f1, a, b, f2=None, f3=None, epsilon=None, iteration_number=None):
         raise Exception
     if epsilon is not None:
         x1 = avg(a, b)
+        if nested_function(f1, x1, f2, f3) == 0:
+            return x1, 1
         a, b = bisection_algorithm(a, b, x1, nested_function(f1, a, f2, f3), nested_function(f1, x1, f2, f3))
         x2 = avg(a, b)
+        if abs(x2 - x1) < epsilon:
+            return x1, 2
         a, b = bisection_algorithm(a, b, x2, nested_function(f1, a, f2, f3), nested_function(f1, x2, f2, f3))
         i = 2
         while abs(x2 - x1) >= epsilon:
@@ -88,8 +91,8 @@ def bisection(f1, a, b, f2=None, f3=None, epsilon=None, iteration_number=None):
         return x2, i
     else:
         x1 = avg(a, b)
-        # if nested_function(f1, x1, f2, f3) == 0:
-        #     return x1, 1
+        if nested_function(f1, x1, f2, f3) == 0:
+            return x1, 1
         a, b = bisection_algorithm(a, b, x1, nested_function(f1, a, f2, f3), nested_function(f1, x1, f2, f3))
         for i in range(1, iteration_number):
             x1 = avg(a, b)
@@ -98,7 +101,7 @@ def bisection(f1, a, b, f2=None, f3=None, epsilon=None, iteration_number=None):
 
 
 def derivative(f):
-    if f == horner:
+    if f == polynomial:
         return polynomial_derivative
     if f == np.sin:
         return np.cos
@@ -128,7 +131,7 @@ def newton_method(f1, fp1, a, b, f2=None, fp2=None, f3=None, fp3=None, epsilon=N
         raise Exception
     x2 = x1 - nested_function(f1, x1, f2, f3) / deriv
     if epsilon is not None:
-        i = 2
+        i = 1
         while abs(x2 - x1) >= epsilon:
             x1 = x2
             deriv = nested_function_derivative(fp1, x1, fp2, fp3, f2, f3)
@@ -138,7 +141,7 @@ def newton_method(f1, fp1, a, b, f2=None, fp2=None, f3=None, fp3=None, epsilon=N
             i += 1
         return x2, i
     else:
-        for i in range(2, iteration_number):
+        for i in range(1, iteration_number):
             x1 = x2
             deriv = nested_function_derivative(fp1, x1, fp2, fp3, f2, f3)
             if deriv == 0:

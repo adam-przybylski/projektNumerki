@@ -19,8 +19,6 @@ class Main:
     fp3 = None
 
     if __name__ == "__main__":
-        # fp1 = f.derivative(np.tan)
-        # print(fp1(1))
         func_count = int(input("Podaj liczbę funkcji w twoim złożeniu (max 3): "))
         if func_count > 3:
             print("Przekroczono limit funkcji do złożenia.")
