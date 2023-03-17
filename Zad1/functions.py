@@ -61,14 +61,6 @@ def ctan_deriv(x):
     return -1.0 / (np.sin(x) ** 2)
 
 
-def bisection_algorithm(a, b, x1, func1, func2):
-    if func1 * func2 < 0:
-        b = x1
-    else:
-        a = x1
-    return a, b
-
-
 def bisection(f1, a, b, f2=None, f3=None, epsilon=None, iteration_number=None):
     if (nested_function(f1, a, f2, f3) <= 0 and nested_function(f1, b, f2, f3) <= 0) or (
             nested_function(f1, a, f2, f3) >= 0 and nested_function(f1, b, f2, f3) >= 0):
@@ -77,26 +69,41 @@ def bisection(f1, a, b, f2=None, f3=None, epsilon=None, iteration_number=None):
         x1 = avg(a, b)
         if nested_function(f1, x1, f2, f3) == 0:
             return x1, 1
-        a, b = bisection_algorithm(a, b, x1, nested_function(f1, a, f2, f3), nested_function(f1, x1, f2, f3))
+        if np.sign(nested_function(f1, x1, f2, f3)) == np.sign(nested_function(f1, a, f2, f3)):
+            a = x1
+        else:
+            b = x1
         x2 = avg(a, b)
         if abs(x2 - x1) < epsilon:
-            return x1, 2
-        a, b = bisection_algorithm(a, b, x2, nested_function(f1, a, f2, f3), nested_function(f1, x2, f2, f3))
+            return x2, 2
+        if np.sign(nested_function(f1, x2, f2, f3)) == np.sign(nested_function(f1, a, f2, f3)):
+            a = x2
+        else:
+            b = x2
         i = 2
         while abs(x2 - x1) >= epsilon:
             x1 = x2
             x2 = avg(a, b)
-            a, b = bisection_algorithm(a, b, x2, nested_function(f1, a, f2, f3), nested_function(f1, x2, f2, f3))
+            if np.sign(nested_function(f1, x2, f2, f3)) == np.sign(nested_function(f1, a, f2, f3)):
+                a = x2
+            else:
+                b = x2
             i += 1
         return x2, i
     else:
         x1 = avg(a, b)
         if nested_function(f1, x1, f2, f3) == 0:
             return x1, 1
-        a, b = bisection_algorithm(a, b, x1, nested_function(f1, a, f2, f3), nested_function(f1, x1, f2, f3))
+        if np.sign(nested_function(f1, x1, f2, f3)) == np.sign(nested_function(f1, a, f2, f3)):
+            a = x1
+        else:
+            b = x1
         for i in range(1, iteration_number):
             x1 = avg(a, b)
-            a, b = bisection_algorithm(a, b, x1, nested_function(f1, a, f2, f3), nested_function(f1, x1, f2, f3))
+            if np.sign(nested_function(f1, x1, f2, f3)) == np.sign(nested_function(f1, a, f2, f3)):
+                a = x1
+            else:
+                b = x1
         return x1, iteration_number
 
 
