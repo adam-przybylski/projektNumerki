@@ -55,7 +55,7 @@ class Main:
                 exit(-1)
 
         a = float(input("Podaj dolną granicę przedziału poszukiwania miejsca zerowego: "))
-        b = float(input("Podaj górną granicę poszukiwania miejsca zerowego: "))
+        b = float(input("Podaj górną granicę przedziału poszukiwania miejsca zerowego: "))
 
         stop_criterion = input("Podaj warunek stopu: 1 - epsilon, 2 - liczba iteracji: ")
         if stop_criterion == "1":
