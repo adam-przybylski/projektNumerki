@@ -54,10 +54,10 @@ class Main:
                 print("Wybrano złą funkcję.")
                 exit(-1)
 
-        a = float(input("Podaj dolny przedział poszukiwania miejsca zerowego: "))
-        b = float(input("Podaj górny przedział poszukiwania miejsca zerowego: "))
+        a = float(input("Podaj dolną granicę przedziału poszukiwania miejsca zerowego: "))
+        b = float(input("Podaj górną granicę poszukiwania miejsca zerowego: "))
 
-        stop_criterion = input("Podaj warunek stopu: 1 - epsilon, 2 - ilośc iteracji: ")
+        stop_criterion = input("Podaj warunek stopu: 1 - epsilon, 2 - liczba iteracji: ")
         if stop_criterion == "1":
             epsilon = float(input("Podaj wartość epsilonu: "))
         elif stop_criterion == "2":
@@ -78,7 +78,7 @@ class Main:
 
         # Plot section
         xmin, xmax, ymin, ymax = -5, 5, -5, 5
-        ticks_frequency = 1
+        ticks_frequency = int((abs(a) + abs(b)) / 10) + 1
 
         fig, ax = plt.subplots(figsize=(10, 10))
 
@@ -105,11 +105,11 @@ class Main:
         ax.grid(which='both', color='grey', linewidth=1, linestyle='-', alpha=0.2)
 
         xlist = np.linspace(a, b, num=1000)
-        ax.plot(xlist, f.nested_function(f1, xlist, f2, f3), color='blue')
+        ax.plot(xlist, f.nested_function(f1, xlist, f2, f3), color='blue', label="y=f(x)")
 
         try:
             result = f.bisection(f1, a, b, epsilon=epsilon, iteration_number=iteration_number, f2=f2, f3=f3)
-            ax.plot(result[0], 0, "ro",  label="Bisection method")
+            ax.plot(result[0], 0, "ro", label="Bisection method")
             print(
                 f'Metoda bisekcji: {result}')
         except Exception:
