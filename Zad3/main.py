@@ -69,6 +69,7 @@ def main():
     for i in range(xi.size):
         yi[i] = f.lagrange_interp(interp_nodes_x, interp_nodes_y, xi[i])
 
+
     # plot section
     fig, ax = plt.subplots(figsize=(10, 10))
     ax.grid(which='both', color='grey', linewidth=1, linestyle='-', alpha=0.2)
