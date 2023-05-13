@@ -56,17 +56,17 @@ def interp(f, n, a, b, xi):
 
 def simpson(f, a, b, tol):
     n = 2
-    dx = (b - a) / n
+    h = (b - a) / n
     x = np.linspace(a, b, n + 1)
     y = f(x) * weight_function(x)
-    S = dx / 3 * np.sum(y[0:-1:2] + 4 * y[1::2] + y[2::2])
+    S = h / 3 * np.sum(y[0:-1:2] + 4 * y[1::2] + y[2::2])
     err = np.inf
     while err > tol:
         n *= 2
-        dx = (b - a) / n
+        h = (b - a) / n
         x = np.linspace(a, b, n + 1)
         y = f(x) * weight_function(x)
-        S_new = dx / 3 * np.sum(y[0:-1:2] + 4 * y[1::2] + y[2::2])
+        S_new = h / 3 * np.sum(y[0:-1:2] + 4 * y[1::2] + y[2::2])
         err = abs(S - S_new)
         S = S_new
     return S
