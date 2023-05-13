@@ -40,6 +40,10 @@ def lagrange_interp(x, y, xi):
     return yi
 
 
+def weight_function(x):
+    return 1 / np.sqrt(1 - x ** 2)
+
+
 def interp(f, n, a, b, xi):
     interp_nodes_x = np.linspace(a, b, num=n)
     interp_nodes_y = f(interp_nodes_x)
@@ -54,7 +58,7 @@ def simpson(f, a, b, tol):
     n = 2
     dx = (b - a) / n
     x = np.linspace(a, b, n + 1)
-    y = interp(f, n, a, b, x)
+    y = f(x)
     S = dx / 3 * np.sum(y[0:-1:2] + 4 * y[1::2] + y[2::2])
     err = np.inf
     while err > tol:
@@ -66,3 +70,8 @@ def simpson(f, a, b, tol):
         err = abs(S - S_new)
         S = S_new
     return S
+
+
+def gauss_chebyshev(f, n):
+    x, w = np.polynomial.chebyshev.chebgauss(n)
+    return sum(w * f(x))
