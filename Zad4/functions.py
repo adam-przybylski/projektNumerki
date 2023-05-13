@@ -58,18 +58,42 @@ def simpson(f, a, b, tol):
     n = 2
     dx = (b - a) / n
     x = np.linspace(a, b, n + 1)
-    y = f(x)
+    y = f(x) * weight_function(x)
     S = dx / 3 * np.sum(y[0:-1:2] + 4 * y[1::2] + y[2::2])
     err = np.inf
     while err > tol:
         n *= 2
         dx = (b - a) / n
         x = np.linspace(a, b, n + 1)
-        y = f(x)
+        y = f(x) * weight_function(x)
         S_new = dx / 3 * np.sum(y[0:-1:2] + 4 * y[1::2] + y[2::2])
         err = abs(S - S_new)
         S = S_new
     return S
+
+
+def simpson_with_limit(f, tol):
+    a = 0
+    b = 0.5
+    temp = simpson(f, a, b, tol)
+    S1 = temp
+    while abs(temp) > tol:
+        a = b
+        b = b + (1 - b) / 2
+        temp = simpson(f, a, b, tol)
+        S1 += temp
+
+    a = -0.5
+    b = 0
+    temp = simpson(f, a, b, tol)
+    S1 += temp
+    while abs(temp) > tol:
+        b = a
+        a = a - (1 + a) / 2
+        temp = simpson(f, a, b, tol)
+        S1 += temp
+
+    return S1
 
 
 def gauss_chebyshev(f, n):

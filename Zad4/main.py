@@ -31,7 +31,7 @@ def main():
             func = np.cos
             return
 
-    S = f.simpson(func, -1, 1, epsilon)
+    S = f.simpson_with_limit(func, epsilon)
     print(f'Metoda Simpsona: {S}')
     print("Metoda Gaussa-Czebyszewa:")
     print(f'    2 węzły: {f.gauss_chebyshev(func, 2)}')
