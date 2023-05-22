@@ -53,12 +53,12 @@ def main():
         degree = int(input("Podaj stopień wielomianu aproksymacyjnego: "))
         n = int(input("Podaj liczbę węzłów dla całkowania metodą Gaussa-Czebyszewa: "))
 
-    f3 = user_functions[2]
-    f2 = user_functions[1]
-    f1 = user_functions[0]
+    f.f3 = user_functions[2]
+    f.f2 = user_functions[1]
+    f.f1 = user_functions[0]
 
-    p, x = f.chebyshev_approximation(f1, f2, f3, degree, a, b)
-    y = f.nested_function(f1, x, f2, f3)
+    p, x = f.chebyshev_approximation(degree, a, b)
+    y = f.nested_function(x)
 
     # plot section
     fig, ax = plt.subplots(figsize=(10, 10))
