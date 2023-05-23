@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 
 def main():
-    global degree, a, b
+    global degree, a, b, epsilon
     defined_functions = {
         '1': np.sin,
         '2': np.tan,
@@ -51,13 +51,13 @@ def main():
         a = float(input("Podaj początek przedziału aproksymacji: "))
         b = float(input("Podaj koniec przedziału aproksymacji: "))
         degree = int(input("Podaj stopień wielomianu aproksymacyjnego: "))
-        n = int(input("Podaj liczbę węzłów dla całkowania metodą Gaussa-Czebyszewa: "))
+        epsilon = float(input("Podaj dokładność dla metody Simpsona: "))
 
     f.f3 = user_functions[2]
     f.f2 = user_functions[1]
     f.f1 = user_functions[0]
 
-    p, x = f.chebyshev_approximation(degree, a, b)
+    p, x = f.chebyshev_approximation(degree, a, b, epsilon)
     y = f.nested_function(x)
 
     # plot section
@@ -65,8 +65,8 @@ def main():
     ax.grid(which='both', color='grey', linewidth=1, linestyle='-', alpha=0.2)
     ax.set_xlabel('$x$', size=14, labelpad=-24, x=1.02)
     ax.set_ylabel('$y$', size=14, labelpad=-21, y=1.02, rotation=0)
-    ax.plot(x, p, color='green', label="funkcja aproksymowana")
     ax.plot(x, y, color='blue', label="pierwotna funkcja")
+    ax.plot(x, p, color='green', label="funkcja aproksymowana")
     plt.legend()
     plt.show()
 

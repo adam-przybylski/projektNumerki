@@ -45,7 +45,7 @@ def chebyshev_polynomial(x, k):
     return np.cos(k * np.arccos(x))
 
 
-def simpson(a, b, k, version=1):
+def simpson(a, b, k, epsilon, version=1):
     n = 2
     h = (b - a) / n
     x = np.linspace(a, b, n + 1)
@@ -55,7 +55,7 @@ def simpson(a, b, k, version=1):
         y = chebyshev_polynomial(x, k) * chebyshev_polynomial(x, k) * weight_function(x)
     S = h / 3 * np.sum(y[0:-1:2] + 4 * y[1::2] + y[2::2])
     err = np.inf
-    while err > 0.000001:
+    while err > epsilon:
         n *= 2
         h = (b - a) / n
         x = np.linspace(a, b, n + 1)
@@ -69,25 +69,25 @@ def simpson(a, b, k, version=1):
     return S
 
 
-def simpson_with_limit(k, version=1):
+def simpson_with_limit(k, epsilon, version=1):
     a = 0
     b = 0.5
-    temp = simpson(a, b, k, version)
+    temp = simpson(a, b, k, epsilon, version)
     S1 = temp
-    while abs(temp) > 0.000001:
+    while abs(temp) > epsilon:
         a = b
         b = b + (1 - b) / 2
-        temp = simpson(a, b, k, version)
+        temp = simpson(a, b, k, epsilon, version)
         S1 += temp
 
     a = -0.5
     b = 0
-    temp = simpson(a, b, k, version)
+    temp = simpson(a, b, k, epsilon, version)
     S1 += temp
-    while abs(temp) > 0.000001:
+    while abs(temp) > epsilon:
         b = a
         a = a - (1 + a) / 2
-        temp = simpson(a, b, k, version)
+        temp = simpson(a, b, k, epsilon, version)
         S1 += temp
 
     return S1
@@ -116,22 +116,22 @@ def chebyshev_coefficients(n):
     return c
 
 
-def chebyshev_coefficients2(n):
+def chebyshev_coefficients2(n, epsilon):
     # Chebyshev coefficients
     c = np.zeros(n + 1)
     for k in range(n + 1):
-        c[k] = simpson_with_limit(k, 1) / simpson_with_limit(k, 2)
+        c[k] = simpson_with_limit(k, epsilon, 1) / simpson_with_limit(k, epsilon, 2)
     return c
 
 
-def chebyshev_approximation(n, a, b):
+def chebyshev_approximation(n, a, b, epsilon):
     # Chebyshev coefficients
-    c = chebyshev_coefficients2(n)
+    c = chebyshev_coefficients2(n, epsilon)
 
     x = np.linspace(a, b, 1000)
     p = np.zeros(x.size)
     # Chebyshev polynomial approximation of f
     for i in range(x.size):
         for k in range(c.size):
-            p[i] += c[k] * np.cos(k * np.arccos(x[i]))
+            p[i] += c[k] * chebyshev_polynomial(x[i], k)
     return p, x
