@@ -18,8 +18,8 @@ def main():
     for i in range(func_count):
         print('''Wybierz funkcje z których chcesz otrzymać złożenie:
                     1 - Wielomian
-                    2 - Funkcje trygonometryczną
-                    3 - Funkcje liniową
+                    2 - Funkcja trygonometryczną
+                    3 - Funkcja |x|
                     4 - Funkcja wykładnicza''')
         func_type = input()
         if func_type == '1':
@@ -39,27 +39,26 @@ def main():
                 exit(-1)
             user_functions[i] = defined_functions[user_choice]
         elif func_type == '3':
-            f.a_linear = float(input("Wybierz współczynnik 'a' funkcji liniowej: "))
-            f.b_linear = float(input("Wybierz współczynnik 'b' funkcji liniowej: "))
-            user_functions[i] = f.linear
+            user_functions[i] = np.abs
         elif func_type == '4':
             f.exponent_base = float(input("Wybierz podstawę funkcji wykładniczej: "))
             user_functions[i] = f.exponent
         else:
             print("Wybrano złą funkcję.")
             exit(-1)
-        a = float(input("Podaj początek przedziału aproksymacji: "))
-        b = float(input("Podaj koniec przedziału aproksymacji: "))
-        degree = int(input("Podaj stopień wielomianu aproksymacyjnego: "))
-        epsilon = float(input("Podaj dokładność dla metody Simpsona: "))
+    a = float(input("Podaj początek przedziału aproksymacji: "))
+    b = float(input("Podaj koniec przedziału aproksymacji: "))
+    degree = int(input("Podaj stopień wielomianu aproksymacyjnego: "))
+    epsilon = float(input("Podaj dokładność dla metody Simpsona: "))
 
     f.f3 = user_functions[2]
     f.f2 = user_functions[1]
     f.f1 = user_functions[0]
 
-    p, x = f.chebyshev_approximation(degree, a, b, epsilon)
+    p, x, err = f.chebyshev_approximation(degree, a, b, epsilon)
     y = f.nested_function(x)
 
+    print(f'Błąd aproksymacji: {err}')
     # plot section
     fig, ax = plt.subplots(figsize=(10, 10))
     ax.grid(which='both', color='grey', linewidth=1, linestyle='-', alpha=0.2)

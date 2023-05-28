@@ -93,6 +93,13 @@ def simpson_with_limit(k, epsilon, version=1):
     return S1
 
 
+def simpson_error(p, x, a, b):
+    h = (b - a) / (x.size - 1)
+    y = (nested_function(x) - p) ** 2
+    S = h / 3 * np.sum(y[0:-1:2] + 4 * y[1::2] + y[2::2])
+    return S
+
+
 def chebyshev_nodes(n):
     # Define the Chebyshev nodes
     x = np.zeros(n)
@@ -127,11 +134,13 @@ def chebyshev_coefficients2(n, epsilon):
 def chebyshev_approximation(n, a, b, epsilon):
     # Chebyshev coefficients
     c = chebyshev_coefficients2(n, epsilon)
+    # c = chebyshev_coefficients(n)
 
-    x = np.linspace(a, b, 1000)
+    x = np.linspace(a, b, 1001)
     p = np.zeros(x.size)
     # Chebyshev polynomial approximation of f
     for i in range(x.size):
         for k in range(c.size):
             p[i] += c[k] * chebyshev_polynomial(x[i], k)
-    return p, x
+    err = np.sqrt(simpson_error(p, x, a, b))
+    return p, x, err
